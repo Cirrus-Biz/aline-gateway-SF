@@ -1,18 +1,13 @@
 server:
-  port: ${APP_PORT}
+  port: 8080
 
 spring:
   application:
     name: "api-gateway"
-  cloud:
-    gateway:
-      httpclient:
-        ssl:
-          use-insecure-trust-manager: true
 
 app:
   gateway:
-    service-host: "http://${APP_SERVICE_HOST}"
+    service-host: "http://localhost"
     path-prefix: "/api"
     routes:
       - id: "user"
@@ -31,14 +26,8 @@ app:
           - "@/applications"
           - "@/applicants/{segment}"
           - "@/applications/{segment}"
-      - id: "account"
-        port: 8072
-        paths:
-          - "@/accounts"
-          - "@/accounts/{segment}"
-          - "@/members/{segment}/accounts"
       - id: "bank"
-        port: 8083
+        port: 8072
         paths:
           - "@/members"
           - "@/members/{segment}"
@@ -55,7 +44,13 @@ app:
           - "@/transactions/{segment}"
           - "@/members/{segment}/transactions"
           - "@/accounts/{segment}/transactions"
+      - id: "account"
+        port: 8074
+        paths:
+          - "@/accounts"
+          - "@/accounts/{segment}"
+          - "@/members/{segment}/accounts"
     portal-origins:
-      - "${PORTAL_LANDING}"
-      - "${PORTAL_DASHBOARD}"
-      - "${PORTAL_ADMIN}"
+      - "http://localhost:4200"
+      - "http://localhost:3007"
+      - "http://localhost:3000"
