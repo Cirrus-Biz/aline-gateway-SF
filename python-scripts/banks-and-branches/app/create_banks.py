@@ -1,6 +1,5 @@
 import requests
 from faker import Faker
-from typing import List
 
 fake = Faker()
 

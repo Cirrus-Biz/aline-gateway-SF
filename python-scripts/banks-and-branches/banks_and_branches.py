@@ -1,8 +1,8 @@
 import os
 import sys
-sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/")
+sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/banks-and-branches/")
 
-from app import create_banks, create_branches
+from app import create_banks, query_banks, create_branches
 
 banks_created_id_array = []
 
@@ -45,7 +45,6 @@ while selection:
         selection_number = int(input(
             "\n--- Create Branches ---\n"
             "Choose 0 To Skip Branch Creation\n"
-            "You Will Create A Branch For Every Bank You Just Created\n"
             "Enter Any Number > 0 To Create Branches: ")
         )
 
@@ -59,7 +58,9 @@ while selection:
         else:
             selection = False
 
-            create_branches.create_branches(banks_created_id_array)
+            selected_bank_id = query_banks.select_bank()
+
+            create_branches.create_branches(selected_bank_id)
 
     except IndexError:  # out of range
         print("\n(Error!) Please Select Numbers 0 or 1...")

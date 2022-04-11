@@ -1,5 +1,4 @@
 import requests
-import time
 from faker import Faker
 
 fake = Faker()
@@ -7,11 +6,18 @@ fake = Faker()
 BASE = "http://127.0.0.1:8080/api"
 headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuIiwiYXV0aG9yaXR5IjoiYWRtaW5pc3RyYXRvciIsImlhdCI6MTY0OTY4NTcxNCwiZXhwIjoxNjUwODk1MzE0fQ.Xn8swsXW4P8kEbrJQWDwqGwFQ0SdO6_d1_WM8kmaUxQ"}
 
-def create_branches(banks_created_id_array):
+
+def create_branches(selected_bank_id):
 
     try:
+
+        number_of_branches = int(input(
+            "\n--- Create Branches ---\n"
+            "Enter The Number Of Branches To Create: ")
+        )
+
         branches_created = 0
-        for bank_id in banks_created_id_array:
+        for _ in range(number_of_branches):
 
             payload = {
                        "name": fake.company(),
@@ -20,7 +26,7 @@ def create_branches(banks_created_id_array):
                        "state": fake.state(),
                        "zipcode": fake.zipcode(),
                        "phone": fake.phone_number(),
-                       "bankID": bank_id}
+                       "bankID": selected_bank_id}
 
             response = requests.post(BASE + "/branches", json=payload, headers=headers)
 
@@ -35,7 +41,7 @@ def create_branches(banks_created_id_array):
             print(f"Created Branch: ID:{branch_id} Name:{branch_name} City:{branch_city} BankID:{branch_bank_id}")
 
 
-        print(f"~~~ You Successfully Created {branches_created} Branches For {len(banks_created_id_array)} Banks ~~~")
+        print(f"~~~ You Successfully Created {branches_created} Branches For Bank ID:{selected_bank_id}~~~")
 
     except Exception as e:
         print(e)
