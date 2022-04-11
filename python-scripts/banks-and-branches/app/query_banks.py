@@ -11,8 +11,7 @@ def select_bank():
     while selection:
         try:
 
-
-            list_of_banks = []
+            # gets banks in JSON format / converts to python dict
             get_banks = requests.get(BASE + "/banks", headers=headers)
             get_banks_dict = get_banks.json()
 
@@ -21,6 +20,7 @@ def select_bank():
                 "Select the Bank ID To Add Branches\n"
                   )
 
+            # prints parsed info from get_banks_dict for each bank to display to user
             for bank_info in get_banks_dict["content"]:
                 bank_id = bank_info["id"]
                 bank_address = bank_info["address"]
@@ -33,13 +33,13 @@ def select_bank():
             )
 
 
+            # sends get request to check if user input is valid bank ID
             check_bank_id = requests.get(BASE + f"/banks/id/{selection_number}", headers=headers)
             if check_bank_id.status_code != 200:
                 print("\n(Error!) Please Select Valid Bank ID...")
             else:
                 selection = False
                 return selection_number
-            
 
         except Exception as e:
             print(e)

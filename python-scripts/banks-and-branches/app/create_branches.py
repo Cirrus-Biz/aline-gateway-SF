@@ -19,6 +19,7 @@ def create_branches(selected_bank_id):
         branches_created = 0
         for _ in range(number_of_branches):
 
+            # creates fake data
             payload = {
                        "name": fake.company(),
                        "address": fake.street_address(),
@@ -28,11 +29,13 @@ def create_branches(selected_bank_id):
                        "phone": fake.phone_number(),
                        "bankID": selected_bank_id}
 
+            # posts branch with selected bank id
             response = requests.post(BASE + "/branches", json=payload, headers=headers)
 
             if response.status_code == 201:
                 branches_created += 1
 
+            # parses response to display branch info
             branch_id = response.json()["id"]
             branch_name = response.json()["name"]
             branch_city = response.json()["city"]

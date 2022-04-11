@@ -1,11 +1,11 @@
-import os
 import sys
 sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/banks-and-branches/")
 
 from app import create_banks, query_banks, create_branches
 
-banks_created_id_array = []
 
+# select number of banks to create
+# runs create_banks module with input number
 selection = True
 while selection:
     try:
@@ -27,17 +27,18 @@ while selection:
             selection = False
             number_of_banks = selection_number
 
-            # returns array of bank id's that were created
-            banks_created_id_array = create_banks.create_banks(number_of_banks)
+            create_banks.create_banks(number_of_banks)
 
     except IndexError:  # out of range
-        print("\n(Error!) Please Select Numbers 0 or 1...")
+        print("\n(Error!) Please Select Numbers 0 or Greater...")
 
     except Exception as e:
         print(e)
         print("\n(Error!) There Was A Problem Running The Application...")
 
 
+# select bank to add branches too
+# select how many branches to add
 selection = True
 while selection:
     try:
@@ -63,7 +64,7 @@ while selection:
             create_branches.create_branches(selected_bank_id)
 
     except IndexError:  # out of range
-        print("\n(Error!) Please Select Numbers 0 or 1...")
+        print("\n(Error!) Please Select Number > 0...")
 
     except Exception as e:
         print(e)
