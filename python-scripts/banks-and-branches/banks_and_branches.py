@@ -1,5 +1,9 @@
-import create_banks
-import create_branches
+import os
+import sys
+sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/")
+
+from app import create_banks
+from app import create_branches
 
 banks_created_id_array = []
 
