@@ -3,13 +3,15 @@ sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-
 
 from app import create_applicants
 
+# asks how many applicants you would like to create
+# calls create_applicants
 selection = True
 while selection:
     try:
 
         selection_number = int(input(
             "\n--- Create Applicants ---\n"
-            "Choose 0 To Skip Applicatoins Creation\n"
+            "Choose 0 To Skip Applicants Creation\n"
             "Enter Number of Applicants To Create: ")
         )
 
