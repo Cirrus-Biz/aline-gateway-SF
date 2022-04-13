@@ -1,8 +1,6 @@
-from os import wait
 import requests
 from random import randint
 from faker import Faker
-# from random import randint
 
 fake = Faker()
 
@@ -10,16 +8,16 @@ BASE = "http://127.0.0.1:8080/api"
 headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuIiwiYXV0aG9yaXR5IjoiYWRtaW5pc3RyYXRvciIsImlhdCI6MTY0OTY4NTcxNCwiZXhwIjoxNjUwODk1MzE0fQ.Xn8swsXW4P8kEbrJQWDwqGwFQ0SdO6_d1_WM8kmaUxQ"}
 
 
-def create_admin():
+def create_admins():
 
     selection = True
     while selection:
         try:
             
             selection_number = int(input(
-                "\n--- Create Admin Users ---\n"
-                "How Many Admin Users To Create?\n"
-                "Enter Number of Admin Users: ")
+                f"\n--- Create Admin Users ---\n"
+                f"How Many Admin Users To Create?\n"
+                f"Enter Number of Admin Users: ")
             )
 
             if selection_number < 0:
@@ -29,7 +27,7 @@ def create_admin():
 
                 selection = False
 
-                admins_created = 0
+                users_created = 0
                 for _ in range(selection_number):
 
                     # creates data outside of payload to avoid JSON object errors
@@ -45,25 +43,26 @@ def create_admin():
                                   "lastName": fake.last_name(),
                                   "email": fake.first_name() + fake.last_name() + "@gmail.com",
                                   "phone": fake_phone_number,
-                                }
+                            }
 
                     # posts data to endpointresponse
                     response = requests.post(BASE + "/users/registration", json=payload, headers=headers)
 
                     if response.status_code == 201:
-                        admins_created += 1
+                        users_created += 1
 
                     # parses data from return JSON
-                    admins_id = response.json()["id"]
-                    admins_firstname = response.json()["firstName"]
-                    admins_lastname = response.json()["lastName"]
-                    admins_role = response.json()["role"]
+                    users_id = response.json()["id"]
+                    users_firstname = response.json()["firstName"]
+                    users_lastname = response.json()["lastName"]
+                    users_role = response.json()["role"]
 
-                    print(f"\nCreated User: ID:{admins_id} Role:{admins_role} ~ {admins_firstname} {admins_lastname} ~")
+                    print(f"\nCreated User: ID:{users_id} Role:{users_role} ~ {users_firstname} {users_lastname} ~")
 
-                print(f"~~~ You Successfully Created {admins_created} Admin Users ~~~")
+                print(f"~~~ You Successfully Created {users_created} Admin Users ~~~")
 
         except Exception as e:
             print(e)
-            print("\n(Error!) There Was A Problem Creating Admin Users...")
+            print("\n(Error!) There Was A Problem Creating Users...")
+
 

@@ -1,7 +1,7 @@
 import sys
 sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/users/")
 
-from app import create_admin, create_member
+from app import create_admins, create_members
 
 selection = True
 while selection:
@@ -10,7 +10,7 @@ while selection:
         selection_number = int(input(
             "\n--- Create Users ---\n"
             "Choose 0 To Skip Users Creation\n"
-            "Choose 1 To Create Admin User\n"
+            "Choose 1 To Create Admin Users\n"
             "Choose 2 To Create Member User\n"
             "Enter Type of User: ")
         )
@@ -26,9 +26,9 @@ while selection:
             selection = False
 
             if selection_number == 1:
-                create_admin.create_admin()
+                create_admins.create_admins()
             elif selection_number == 2:
-                create_member.create_member()
+                create_members.create_members()
             else:
                 print("\n(Error!) Please Restart and Try Again...")
 
