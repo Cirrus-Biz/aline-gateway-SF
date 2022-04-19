@@ -1,8 +1,10 @@
+import os
 import requests
 import sys
 import unittest
 
-sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/transaction/tests/")
+dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(dir_path)
 
 BASE = "http://127.0.0.1"
 headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
