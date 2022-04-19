@@ -1,13 +1,11 @@
-# once member choosen, need to get member name, accounts and numbers for users
-# show account values
-# choose deposit, withdraw, transfer between accounts
-# have checks to make sure no overdrafts, or can transfer
-# complete function and show results
-
 import requests
+import sys
+from app import deposit
+
+sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/transaction/app/")
 
 BASE = "http://127.0.0.1:8080/api"
-headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuIiwiYXV0aG9yaXR5IjoiYWRtaW5pc3RyYXRvciIsImlhdCI6MTY0OTY4NTcxNCwiZXhwIjoxNjUwODk1MzE0fQ.Xn8swsXW4P8kEbrJQWDwqGwFQ0SdO6_d1_WM8kmaUxQ"}
+headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
 
 def member_account_method(member_id, member_name):
 
@@ -37,16 +35,49 @@ def member_account_method(member_id, member_name):
     while selection:
         try:
             
-            show_this_many_members = int(input(
+            method_choice = int(input(
                 f"\n--- Withdraw, Deposit, or Transfer ---\n"
-                f"We Will Only Show You Members That Are Not Currently Users\n"
-                f"How Many Valid Members Would You Like To Choose From?: ")
+                f"Select 0 To Quit\n"
+                f"Select 1 For Withdraw\n"
+                f"Select 2 For Deposit\n"
+                f"Select 3 For Transfer\n"
+                f"Enter Selection: ")
             )
 
-            if show_this_many_members < 0:
+            if method_choice < 0 or method_choice > 3:
                 print("\n(Error!) Please Select Valid Number...")
 
+            elif method_choice == 0:
+                print("\nYou Have Quit The Application...")
+                selection = False
+
+            elif method_choice == 1:
+                if number_of_accounts == 0:
+                    print("\n(Error!) This Account Has No Accounts...")
+                else:
+                    # file that takes name and account dicts to work on
+                    selection = False
+
+            elif method_choice == 2:
+                if number_of_accounts == 0:
+                    print("\n(Error!) This Account Has No Accounts...")
+                else:
+                    # file that takes name and account to deposit
+                    continue_selection = deposit.deposit(member_name, accounts_dict, member_id)
+                    if continue_selection == 1:
+                        pass
+                    else:
+                        selection = False
+
+            elif method_choice == 3:
+                if number_of_accounts < 2:
+                    print("\n(Error!) This Member Does Not Have More Than One Account To Transfer...")
+                else:
+                    # file that takes name and account to transfer
+                    selection = False
+                    
             else:
+                pass
 
         except Exception as e:
             print(e)
