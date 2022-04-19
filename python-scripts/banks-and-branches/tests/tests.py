@@ -1,3 +1,4 @@
+import os
 import requests
 import sys
 import unittest
@@ -5,7 +6,8 @@ from faker import Faker
 # from app import create_banks
 # from app import create_branches
 
-sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/banks-and-branches/")
+dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(dir_path)
 
 fake = Faker()
 
