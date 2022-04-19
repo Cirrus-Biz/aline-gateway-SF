@@ -28,7 +28,6 @@ while selection:
         else:
             selection = False
 
-
             # creates dict of all members on first page
             get_members = requests.get(BASE + "/members", headers=headers)
             members_dict = get_members.json()
@@ -81,7 +80,6 @@ while selection:
                 
                 if member_print_count >= selection_number:
                     break
-
 
             # gets user input for member id / validates it is in the list of member id's
             valid_member_id = True

@@ -8,7 +8,6 @@ def deposit(member_name, member_id):
 
     print("\nWhat Account To Deposit Into?\n")
 
-
     # get member accounts JSON
     get_member_accounts = requests.get(BASE + f"/members/{member_id}/accounts", headers=headers)
     member_accounts_dict = get_member_accounts.json()
@@ -23,6 +22,7 @@ def deposit(member_name, member_id):
         account_balance = member_accounts_dict["content"][i]["balance"]
         accounts_dict[account_type] = {"account_number": account_number, "account_balance": account_balance}
 
+    # prints account info and builds list of valid accounts for later validations
     account_number_list = []
     for account_type in accounts_dict:
         account_balance = accounts_dict[account_type]["account_balance"]
@@ -37,13 +37,12 @@ def deposit(member_name, member_id):
             account_number_selection = input(f"\nEnter The Account Number To Deposit: ")
 
             amount_to_deposit = int(input(f"\nEnter The Amount To Deposit: "))
-                
 
             if account_number_selection not in account_number_list:
                 print("\n(Error!) Please Select Valid Account Number...")
 
             else:
-                pass
+                selection = False
 
                 payload = {
                            "type": "DEPOSIT",
@@ -54,11 +53,10 @@ def deposit(member_name, member_id):
                            "description": "Merchant Description",
                            "accountNumber": account_number_selection}
 
-                # posts branch with selected bank id
+                # posts deposit transaction
                 post_response = requests.post(BASE + "/transactions", json=payload, headers=headers)
 
-
-                # parses response to display branch info
+                # parses response
                 deposit_status = post_response.json()["status"]
                 if deposit_status == "APPROVED":
                     print(f"\nDeposited {amount_to_deposit} to {member_name}'s Account: {account_number_selection}")

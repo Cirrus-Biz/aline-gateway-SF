@@ -4,7 +4,7 @@ BASE = "http://127.0.0.1:8080/api"
 headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
 
 # returns 1 or 0 to member_account_method to continue or cancel more transactions
-def withdrawal(member_name, member_id):
+def transfer(member_name, member_id):
 
     selection = True
     while selection:
@@ -34,38 +34,37 @@ def withdrawal(member_name, member_id):
                 print(f"{account_type} ~ Balance: {account_balance} ~ Account Number: {account_number}")
                 account_number_dict[account_number] = account_type
 
-            account_number_selection = input(f"\nEnter The Account Number To Withdraw From: ")
+            account_to_withdraw = input(f"\nEnter The Account Number To Withdraw From: ")
 
-            amount_to_withdrawal = int(input(f"\nEnter The Amount To Withdrawal: "))
+            amount_to_transfer = int(input(f"\nEnter The Amount To Transfer: "))
+
+            account_to_deposit= input(f"\nEnter The Account Number To Deposit: ")
                 
-            # validates account number
-            if account_number_selection not in account_number_dict:
-                print("\n(Error!) Please Select Valid Account Number...")
+            if account_to_withdraw not in account_number_dict or account_to_deposit not in account_number_dict:
+                print("\n(Error!) Please Select Valid Account Numbers...")
 
-            elif amount_to_withdrawal > accounts_dict[account_number_dict[account_number_selection]]["account_balance"]:
-                print(f"\n(Error!) There Is Not Enough Funds To Withdrawal {amount_to_withdrawal}")
+            elif amount_to_transfer > accounts_dict[account_number_dict[account_to_withdraw]]["account_balance"]:
+                print(f"\n(Error!) There Is Not Enough Funds To Withdrawal {amount_to_transfer}")
 
             else:
                 selection = False
 
                 payload = {
-                           "type": "WITHDRAWAL",
-                           "method": "ATM",
-                           "amount": amount_to_withdrawal,
-                           "merchantCode": "111111",
-                           "merchantName": "Merchant Name",
-                           "description": "Merchant Description",
-                           "accountNumber": account_number_selection}
+                           "fromAccountNumber": account_to_withdraw,
+                           "toAccountNumber": account_to_deposit,
+                           "amount": amount_to_transfer,
+                           "memo": "Transfering"}  
 
-                # posts withdrawal transaction
-                post_response = requests.post(BASE + "/transactions", json=payload, headers=headers)
+                # posts transfer
+                post_response = requests.post(BASE + "/transactions/transfer", json=payload, headers=headers)
 
                 # parses response
-                withdrawal_status = post_response.json()["status"]
-                if withdrawal_status == "APPROVED":
-                    print(f"\nWithdrew {amount_to_withdrawal} from {member_name}'s Account: {account_number_selection}")
+                transfer_status_0 = post_response.json()[0]["status"]
+                transfer_status_1 = post_response.json()[1]["status"]
+                if transfer_status_0 == "APPROVED" and transfer_status_1 == "APPROVED":
+                    print(f"\n{amount_to_transfer} Was Transfered Between {member_name}'s Accounts")
                 else:
-                    print("\n(Error!) Something Went Wrong Depositing...")
+                    print("\n(Error!) Something Went Wrong Transfering...")
 
                 # get account details again
                 # ask if you would like to make another transaction:
@@ -102,4 +101,4 @@ def withdrawal(member_name, member_id):
 
         except Exception as e:
             print(e)
-            print("\n(Error!) There Was A Problem With Withdrawal...")
+            print("\n(Error!) There Was A Problem With Transfer...")

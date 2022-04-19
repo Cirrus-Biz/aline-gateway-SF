@@ -1,6 +1,6 @@
 import requests
 import sys
-from app import deposit, withdrawal
+from app import deposit, withdrawal, transfer
 
 sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/transaction/app/")
 
@@ -29,8 +29,6 @@ def member_account_method(member_id, member_name):
         account_balance = accounts_dict[account]["account_balance"]
         print(f"{account}: {account_balance}")
 
-
-
     selection = True
     while selection:
         try:
@@ -56,7 +54,7 @@ def member_account_method(member_id, member_name):
                     print("\n(Error!) This Account Has No Accounts...")
                 else:
                     continue_selection = withdrawal.withdrawal(member_name, member_id)
-                    if continue_selection == 1:
+                    if continue_selection == 1:  # continue with other transactions
                         pass
                     else:
                         selection = False
@@ -66,7 +64,7 @@ def member_account_method(member_id, member_name):
                     print("\n(Error!) This Account Has No Accounts...")
                 else:
                     continue_selection = deposit.deposit(member_name, member_id)
-                    if continue_selection == 1:
+                    if continue_selection == 1:  # continue with other transactions
                         pass
                     else:
                         selection = False
@@ -75,12 +73,12 @@ def member_account_method(member_id, member_name):
                 if number_of_accounts < 2:
                     print("\n(Error!) This Member Does Not Have More Than One Account To Transfer...")
                 else:
-                    # file that takes name and account to transfer
-                    selection = False
+                    continue_selection = transfer.transfer(member_name, member_id)
+                    if continue_selection == 1:  # continue with other transactions
+                        pass
+                    else:
+                        selection = False
                     
-            else:
-                pass
-
         except Exception as e:
             print(e)
             print("\n(Error!) There Was A Problem In Member Account Functions...")
