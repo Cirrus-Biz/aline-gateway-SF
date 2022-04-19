@@ -1,6 +1,6 @@
 import requests
 import sys
-from app import deposit
+from app import deposit, withdrawal
 
 sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/transaction/app/")
 
@@ -38,7 +38,7 @@ def member_account_method(member_id, member_name):
             method_choice = int(input(
                 f"\n--- Withdraw, Deposit, or Transfer ---\n"
                 f"Select 0 To Quit\n"
-                f"Select 1 For Withdraw\n"
+                f"Select 1 For Withdrawal\n"
                 f"Select 2 For Deposit\n"
                 f"Select 3 For Transfer\n"
                 f"Enter Selection: ")
@@ -55,15 +55,17 @@ def member_account_method(member_id, member_name):
                 if number_of_accounts == 0:
                     print("\n(Error!) This Account Has No Accounts...")
                 else:
-                    # file that takes name and account dicts to work on
-                    selection = False
+                    continue_selection = withdrawal.withdrawal(member_name, member_id)
+                    if continue_selection == 1:
+                        pass
+                    else:
+                        selection = False
 
             elif method_choice == 2:
                 if number_of_accounts == 0:
                     print("\n(Error!) This Account Has No Accounts...")
                 else:
-                    # file that takes name and account to deposit
-                    continue_selection = deposit.deposit(member_name, accounts_dict, member_id)
+                    continue_selection = deposit.deposit(member_name, member_id)
                     if continue_selection == 1:
                         pass
                     else:

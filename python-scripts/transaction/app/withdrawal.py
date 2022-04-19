@@ -4,51 +4,56 @@ BASE = "http://127.0.0.1:8080/api"
 headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
 
 # returns 1 or 0 to member_account_method to continue or cancel more transactions
-def deposit(member_name, member_id):
-
-    print("\nWhat Account To Deposit Into?\n")
-
-
-    # get member accounts JSON
-    get_member_accounts = requests.get(BASE + f"/members/{member_id}/accounts", headers=headers)
-    member_accounts_dict = get_member_accounts.json()
-
-    # builds dict of member accounts and values
-    # type of account is the key / value dict {account_number: and account_balance:}
-    number_of_accounts = len(member_accounts_dict["content"])
-    accounts_dict = {}
-    for i in range(number_of_accounts):
-        account_type = member_accounts_dict["content"][i]["type"]
-        account_number = member_accounts_dict["content"][i]["accountNumber"]
-        account_balance = member_accounts_dict["content"][i]["balance"]
-        accounts_dict[account_type] = {"account_number": account_number, "account_balance": account_balance}
-
-    account_number_list = []
-    for account_type in accounts_dict:
-        account_balance = accounts_dict[account_type]["account_balance"]
-        account_number = accounts_dict[account_type]["account_number"]
-        print(f"{account_type} ~ Balance: {account_balance} ~ Account Number: {account_number}")
-        account_number_list.append(account_number)
+def withdrawal(member_name, member_id):
 
     selection = True
     while selection:
         try:
             
-            account_number_selection = input(f"\nEnter The Account Number To Deposit: ")
+            print("\nWhat Account To Withdrawal From?\n")
 
-            amount_to_deposit = int(input(f"\nEnter The Amount To Deposit: "))
+            # get member accounts JSON
+            get_member_accounts = requests.get(BASE + f"/members/{member_id}/accounts", headers=headers)
+            member_accounts_dict = get_member_accounts.json()
+
+            # builds dict of member accounts and values
+            # type of account is the key / value dict {account_number: and account_balance:}
+            number_of_accounts = len(member_accounts_dict["content"])
+            accounts_dict = {}
+            for i in range(number_of_accounts):
+                account_type = member_accounts_dict["content"][i]["type"]
+                account_number = member_accounts_dict["content"][i]["accountNumber"]
+                account_balance = member_accounts_dict["content"][i]["balance"]
+                accounts_dict[account_type] = {"account_number": account_number, "account_balance": account_balance}
+
+            account_number_dict = {}
+            account_balance = 0
+            for account_type in accounts_dict:
+                account_balance = accounts_dict[account_type]["account_balance"]
+                account_number = accounts_dict[account_type]["account_number"]
+                print(f"{account_type} ~ Balance: {account_balance} ~ Account Number: {account_number}")
+                account_number_dict[account_number] = account_type
+
+            account_number_selection = input(f"\nEnter The Account Number To Withdraw From: ")
+
+            amount_to_withdrawal = int(input(f"\nEnter The Amount To Withdrawal: "))
                 
+            account_type = account_number_dict[account_number_selection]
+            account_balance = accounts_dict[account_type]["account_balance"]
 
-            if account_number_selection not in account_number_list:
-                print("\n(Error!) Please Select Valid Account Number...")
+            if account_number_selection not in account_number_dict:
+                print("\n(Error!) Please Select Valid Number...")
+
+            elif amount_to_withdrawal > account_balance:
+                print(f"\n(Error!) There Is Not Enough Funds To Withdrawal {amount_to_withdrawal}")
 
             else:
                 pass
 
                 payload = {
-                           "type": "DEPOSIT",
+                           "type": "WITHDRAWAL",
                            "method": "ATM",
-                           "amount": amount_to_deposit,
+                           "amount": amount_to_withdrawal,
                            "merchantCode": "111111",
                            "merchantName": "Merchant Name",
                            "description": "Merchant Description",
@@ -59,9 +64,9 @@ def deposit(member_name, member_id):
 
 
                 # parses response to display branch info
-                deposit_status = post_response.json()["status"]
-                if deposit_status == "APPROVED":
-                    print(f"\nDeposited {amount_to_deposit} to {member_name}'s Account: {account_number_selection}")
+                withdrawal_status = post_response.json()["status"]
+                if withdrawal_status == "APPROVED":
+                    print(f"\nWithdrew {amount_to_withdrawal} from {member_name}'s Account: {account_number_selection}")
                 else:
                     print("\n(Error!) Something Went Wrong Depositing...")
 
@@ -101,4 +106,4 @@ def deposit(member_name, member_id):
 
         except Exception as e:
             print(e)
-            print("\n(Error!) There Was A Problem With Deposit...")
+            print("\n(Error!) There Was A Problem With Withdrawal...")
