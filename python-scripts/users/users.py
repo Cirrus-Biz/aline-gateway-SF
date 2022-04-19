@@ -1,7 +1,11 @@
+import os
 import sys
-sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/users/")
+
+dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(dir_path)
 
 from app import create_admins, create_members
+
 
 selection = True
 while selection:
