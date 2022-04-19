@@ -1,5 +1,8 @@
+import os
 import sys
-sys.path.append("/Users/stephenfreed/Projects/Capstone/Cirrus-Biz/aline-gateway-SF/python-scripts/applicants/")
+
+dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+sys.path.append(dir_path)
 
 from app import create_applicants
 
