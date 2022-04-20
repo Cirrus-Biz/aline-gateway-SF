@@ -2,12 +2,17 @@ import os
 import requests
 import sys
 import unittest
+from dotenv import load_dotenv, find_dotenv
 
 dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
 sys.path.append(dir_path)
 
+# loads bearer token from .env
+load_dotenv(find_dotenv())
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+
 BASE = "http://127.0.0.1"
-headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
+headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 class Tests(unittest.TestCase):
 

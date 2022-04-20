@@ -1,7 +1,13 @@
+import os
 import requests
+from dotenv import load_dotenv, find_dotenv
+
+# loads bearer token from .env
+load_dotenv(find_dotenv())
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 
 BASE = "http://127.0.0.1:8080/api"
-headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuZnJlZWQiLCJhdXRob3JpdHkiOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNjUwMzI2NTA4LCJleHAiOjE2NTE1MzYxMDh9.BjZiqm0ozzxFizdYK94-v08QDS5DvbjEp2aS1teyCFs"}
+headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 # returns 1 or 0 to member_account_method to continue or cancel more transactions
 def withdrawal(member_name, member_id):
