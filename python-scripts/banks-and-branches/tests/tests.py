@@ -3,16 +3,19 @@ import requests
 import sys
 import unittest
 from faker import Faker
-# from app import create_banks
-# from app import create_branches
+from dotenv import load_dotenv, find_dotenv
 
 dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
 sys.path.append(dir_path)
 
 fake = Faker()
 
+# loads bearer token from .env
+load_dotenv(find_dotenv())
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+
 BASE = "http://127.0.0.1"
-headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuIiwiYXV0aG9yaXR5IjoiYWRtaW5pc3RyYXRvciIsImlhdCI6MTY0OTY4NTcxNCwiZXhwIjoxNjUwODk1MzE0fQ.Xn8swsXW4P8kEbrJQWDwqGwFQ0SdO6_d1_WM8kmaUxQ"}
+headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 class Tests(unittest.TestCase):
 
