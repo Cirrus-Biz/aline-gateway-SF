@@ -1,11 +1,17 @@
+import os
 import requests
 from random import randint
 from faker import Faker
+from dotenv import load_dotenv, find_dotenv
 
 fake = Faker()
 
+# loads bearer token from .env
+load_dotenv(find_dotenv())
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+
 BASE = "http://127.0.0.1:8080/api"
-headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGVwaGVuIiwiYXV0aG9yaXR5IjoiYWRtaW5pc3RyYXRvciIsImlhdCI6MTY0OTY4NTcxNCwiZXhwIjoxNjUwODk1MzE0fQ.Xn8swsXW4P8kEbrJQWDwqGwFQ0SdO6_d1_WM8kmaUxQ"}
+headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 
 def create_admins():
