@@ -4,10 +4,15 @@ server:
 spring:
   application:
     name: "api-gateway"
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          use-insecure-trust-manager: true
 
 app:
   gateway:
-    service-host: "http://localhost"
+    service-host: "http://${DOCKER0_IP}"
     path-prefix: "/api"
     routes:
       - id: "user"
