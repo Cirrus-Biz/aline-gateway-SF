@@ -4,14 +4,14 @@ from faker import Faker
 from random import randint
 from dotenv import load_dotenv, find_dotenv
 
-fake = Faker()
-
 # loads bearer token from .env
 load_dotenv(find_dotenv())
 BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 
 BASE = "http://127.0.0.1:8080/api"
 headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
+
+fake = Faker()
 
 def create_applications(number_of_applications: int):
 
