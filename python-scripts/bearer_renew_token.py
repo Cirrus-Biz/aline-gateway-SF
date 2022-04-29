@@ -34,8 +34,8 @@ def renew_bearer():
             my_file.write(f"BEARER_TOKEN Registration on {todays_date} ~ Status:{response_code} ")
 
     except Exception as e:
-        pass
         print(e)
+        print(response_code)
 
     finally:
 
@@ -54,9 +54,9 @@ def renew_bearer():
         with open("./.env", "w") as my_file:
             my_file.write(f"BEARER_TOKEN={bearer_token}")
 
-        print("got here")
-
         with open("./bearer_log.txt", "a") as my_file:
             todays_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             my_file.write(f"BEARER_TOKEN renewed on {todays_date}")
 
+
+renew_bearer()
