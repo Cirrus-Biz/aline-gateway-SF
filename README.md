@@ -3,6 +3,10 @@
 This server is a gateway that routes specific requests specified in the
 configurations to a microservice.
 
+##### To Test The Functionality Of The Microservices 
+##### Use Python Applications In The Directory python-scripts Of This Repository
+##### More Info In The python-scripts Directory
+
 ### Starting Up The Server
 
 The service does not require and special configurations to run for the first 
