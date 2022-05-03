@@ -31,11 +31,10 @@ def renew_bearer():
 
         with open("./bearer_log.txt", "a") as my_file:
             todays_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            my_file.write(f"BEARER_TOKEN Registration on {todays_date} ~ Status:{response_code} ")
+            my_file.write(f"BEARER_TOKEN Registration on {todays_date} ~ Status:{response_code}\n")
 
     except Exception as e:
         print(e)
-        print(response_code)
 
     finally:
 
@@ -56,7 +55,7 @@ def renew_bearer():
 
         with open("./bearer_log.txt", "a") as my_file:
             todays_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            my_file.write(f"BEARER_TOKEN renewed on {todays_date}")
+            my_file.write(f"BEARER_TOKEN renewed on {todays_date}\n")
 
 
 renew_bearer()
