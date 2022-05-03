@@ -106,15 +106,17 @@ services:
   aline-mysql:
     image: mysql:8.0.28
     container_name: aline-mysql
-    volumes:
-      - alinedb:/var/lib/mysql
     networks:
       aline-bridge:
         aliases:
           - aline-mysql
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - alinedb:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${CIRRUS_MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${CIRRUS_MYSQL_DATABASE}
+      - MYSQL_DATABASE=alinedb
       - MYSQL_USER=${CIRRUS_MYSQL_USER}
       - MYSQL_PASSWORD=${CIRRUS_MYSQL_PASSWORD}
 
