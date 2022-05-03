@@ -14,7 +14,7 @@ while selection:
 
         selection_number = int(input(
             "\n--- Create Applications ---\n"
-            "Choose 0 To Skip Applicatoins Creation\n"
+            "Choose 0 To Skip Applications Creation\n"
             "Enter Number of Applications: ")
         )
 
