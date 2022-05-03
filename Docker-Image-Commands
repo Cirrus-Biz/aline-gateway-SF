@@ -1,0 +1,43 @@
+Gateway = 8080
+User = 8070
+Underwriter = 8071
+Bank = 8072
+Transaction = 8073
+Account = 8074
+Mysql = 3306
+
+~~~~~~~ Create Bridge Network ~~~~~~~~
+docker network create --driver=bridge --subnet=172.20.0.0/16 --ip-range=172.20.20.0/24 --gateway=172.20.20.1 aline-bridge
+
+~~~~~~~ MySQL ~~~~~~~~
+docker run --name aline-mysql --network aline-bridge --net-alias aline-mysql -e MYSQL_ROOT_PASSWORD=${CIRRUS_MYSQL_ROOT_PASSWORD} -e MYSQL_DATABASE=${CIRRUS_MYSQL_DATABASE} -e MYSQL_USER=${CIRRUS_MYSQL_DATABASE} -e MYSQL_PASSWORD=${CIRRUS_MYSQL_PASSWORD} -d mysql:8.0.28
+
+~~~~~~~ Account ~~~~~~~~
+docker build . -t stephenfreed/aline-account-microservice:v0.1.0
+
+docker run --name aline-account-microservice -p 8074:8074 --network aline-bridge -e DB_USERNAME=${CIRRUS_DB_USERNAME} -e DB_PASSWORD=${CIRRUS_DB_PASSWORD} -e DB_CONTAINER_NAME=${CIRRUS_DB_CONTAINER_NAME} -e SECRET_KEY=${CIRRUS_SECRET_KEY} -d stephenfreed/aline-account-microservice:v0.1.0
+
+~~~~~~~ Bank ~~~~~~~~
+docker build . -t stephenfreed/aline-bank-microservice:v0.1.0
+
+docker run --name aline-bank-microservice -p 8072:8072 --network aline-bridge -e DB_USERNAME=${CIRRUS_DB_USERNAME} -e DB_PASSWORD=${CIRRUS_DB_PASSWORD} -e DB_CONTAINER_NAME=${CIRRUS_DB_CONTAINER_NAME} -e SECRET_KEY=${CIRRUS_SECRET_KEY} -d stephenfreed/aline-bank-microservice:v0.1.0
+
+~~~~~~~ Transaction ~~~~~~~~
+docker build . -t stephenfreed/aline-transaction-microservice:v0.1.0
+
+docker run --name aline-transaction-microservice -p 8073:8073 --network aline-bridge -e DB_USERNAME=${CIRRUS_DB_USERNAME}-e DB_PASSWORD=${CIRRUS_DB_PASSWORD} -e DB_CONTAINER_NAME=${CIRRUS_DB_CONTAINER_NAME} -e SECRET_KEY=${CIRRUS_SECRET_KEY} -d stephenfreed/aline-transaction-microservice:v0.1.0
+
+~~~~~~~ Underwriter ~~~~~~~~
+docker build . -t stephenfreed/aline-underwriter-microservice:v0.1.0
+
+docker run --name aline-underwriter-microservice -p 8071:8071 --network aline-bridge -e DB_USERNAME=${CIRRUS_DB_USERNAME} -e DB_PASSWORD=${CIRRUS_DB_PASSWORD} -e DB_CONTAINER_NAME=${CIRRUS_DB_CONTAINER_NAME} -e SECRET_KEY=${CIRRUS_SECRET_KEY} -d stephenfreed/aline-underwriter-microservice:v0.1.0
+
+~~~~~~~ User ~~~~~~~~
+docker build . -t stephenfreed/aline-user-microservice:v0.1.0
+
+docker run --name aline-user-microservice -p 8070:8070 --network aline-bridge -e DB_USERNAME=${CIRRUS_DB_USERNAME} -e DB_PASSWORD=${CIRRUS_DB_PASSWORD} -e DB_CONTAINER_NAME=${CIRRUS_DB_CONTAINER_NAME} -e SECRET_KEY=${CIRRUS_SECRET_KEY} -d stephenfreed/aline-user-microservice:v0.1.0
+
+~~~~~~~ Gateway ~~~~~~~~
+docker build . -t stephenfreed/aline-gateway:v0.1.0
+
+docker run --name aline-gateway --network aline-bridge -p 8080:8080 -e DOCKER0_IP=172.20.20.1 -d stephenfreed/aline-gateway:v0.1.0
