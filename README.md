@@ -1,11 +1,18 @@
 # Aline API Gateway
+---
+
+<br>
+
+>##### You Can Run All Microservice With The Docker Compose In This Repository
+>##### Make Sure To Export Environment Variables In Secrets-Export-Example File
+>##### To Test The Functionality Of The Microservices 
+>##### Use Python Applications In The Directory python-scripts Of This Repository
+>##### More Info In The python-scripts Directory
+ 
+<br>
 
 This server is a gateway that routes specific requests specified in the
 configurations to a microservice.
-
-##### To Test The Functionality Of The Microservices 
-##### Use Python Applications In The Directory python-scripts Of This Repository
-##### More Info In The python-scripts Directory
 
 ### Starting Up The Server
 

@@ -2,7 +2,10 @@
 ---
 
 #### Each Directory Tests Different API Microservice Functionalities.
-##### Run bearer_renew_token.py To Renew Bearer Token Before Running Python Applications Below
+
+### Setup
+- pip install -r requirements.txt
+- Run bearer_renew_token.py To Renew Bearer Token Before Running Python Applications Below
 
 ##### Go To Each Directory and Run The Main Python File (named the same as directory)
 
