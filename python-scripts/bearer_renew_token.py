@@ -4,7 +4,8 @@
     It then writes this token to .env file. 
     These tokens expire every 7 days.
     Currently You can run this if getting 403's to refresh token. 
-    In further version we will automate this with springboot scheduling. 
+
+    Set HOST variable to the host you are sending requests too
 """
 
 import os
@@ -16,7 +17,8 @@ load_dotenv(find_dotenv())
 ADCU_LOADBALANCER_DNS = os.environ.get("ADCU_LOADBALANCER_DNS")
 
 # HOST = "127.0.0.1"
-HOST = "docker-compose-lb-c7f7aeb0b809773c.elb.us-east-1.amazonaws.com"
+HOST = "ENTER REMOTE MACHINE HOST HERE"
+
 BASE = f"http://{HOST}:8080/api"
 
 def renew_bearer():
