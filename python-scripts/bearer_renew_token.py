@@ -10,7 +10,8 @@
 from datetime import datetime
 import requests
 
-BASE = "http://127.0.0.1:8080/api"
+HOST = "127.0.0.1"
+BASE = f"http://{HOST}:8080/api"
 
 def renew_bearer():
     try:
@@ -51,7 +52,7 @@ def renew_bearer():
 
         # writes to .env file
         with open("./.env", "w") as my_file:
-            my_file.write(f"BEARER_TOKEN={bearer_token}")
+            my_file.write(f"BEARER_TOKEN={bearer_token}\nHOST={HOST}")
 
         with open("./bearer_log.txt", "a") as my_file:
             todays_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

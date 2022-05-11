@@ -13,8 +13,9 @@ fake = Faker()
 # loads bearer token from .env
 load_dotenv(find_dotenv())
 BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+HOST = os.environ.get("HOST")
 
-BASE = "http://127.0.0.1"
+BASE = f"http://{HOST}"
 headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 class Tests(unittest.TestCase):

@@ -10,8 +10,9 @@ sys.path.append(dir_path)
 # loads bearer token from .env
 load_dotenv(find_dotenv())
 BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+HOST = os.environ.get("HOST")
 
-BASE = "http://127.0.0.1:8080/api"
+BASE = f"http://{HOST}:8080/api"
 headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
 
 
