@@ -3,8 +3,8 @@
 
 <br>
 
->##### You Can Run All Microservice With The Docker Compose In This Repository
->##### Make Sure To Export Environment Variables In Secrets-Export-Example File
+>##### You Can Run All The Projects Microservices With The Docker Compose File In This Repository
+>##### Make Sure To Export Environment Variables In env_var_for_all_services.txt File
 >##### To Test The Functionality Of The Microservices 
 >##### Use Python Applications In The Directory python-scripts Of This Repository
 >##### More Info In The python-scripts Directory
