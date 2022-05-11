@@ -7,10 +7,16 @@
     In further version we will automate this with springboot scheduling. 
 """
 
-from datetime import datetime
+import os
 import requests
+from datetime import datetime
+from dotenv import load_dotenv, find_dotenv
 
-HOST = "127.0.0.1"
+load_dotenv(find_dotenv())
+ADCU_LOADBALANCER_DNS = os.environ.get("ADCU_LOADBALANCER_DNS")
+
+# HOST = "127.0.0.1"
+HOST = "docker-compose-lb-c7f7aeb0b809773c.elb.us-east-1.amazonaws.com"
 BASE = f"http://{HOST}:8080/api"
 
 def renew_bearer():
