@@ -1,0 +1,6 @@
+BEARER_TOKEN Registration on 11/05/2022 12:40:08 ~ Status:201
+BEARER_TOKEN renewed on 11/05/2022 12:40:09
+BEARER_TOKEN Registration on 11/05/2022 12:41:20 ~ Status:409
+BEARER_TOKEN renewed on 11/05/2022 12:41:21
+BEARER_TOKEN Registration on 11/05/2022 12:41:35 ~ Status:409
+BEARER_TOKEN renewed on 11/05/2022 12:41:35
