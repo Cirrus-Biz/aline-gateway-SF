@@ -1,0 +1,59 @@
+#!/usr/bin/env groovy
+
+pipeline {
+
+    agent {
+        node {
+            label 'dev-node'
+        }
+    }
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id') 
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key') 
+        AWS_REGION = credentials('aws_region') 
+        AWS_OUTPUT = credentials('aws_output') 
+        AWS_ACCOUNT_ID = credentials('aws_account_id') 
+    }
+
+    stages {
+
+        stage('Build Jar') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image Tagged For ECR') {
+            steps {
+                sh 'sudo docker build . -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:v0.1.0'
+            }
+        }
+
+        stage('AWS Credentials and Login') {
+            steps {
+                sh 'aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}'
+                sh 'aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}'
+                sh 'aws configure set default.region ${AWS_REGION}'
+                sh 'aws configure set output ${AWS_OUTPUT}'
+                sh 'aws ecr get-login-password --region ${AWS_REGION} | sudo docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com'
+            }
+        }
+
+        stage('Push Image To ECR') {
+            steps {
+                sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:v0.1.0'
+            }
+        }
+
+    }
+
+    post {
+        always {
+            sh 'sudo docker logout'  // logs out of docker removing credentials
+            sh 'sudo rm -rf ~/.aws/'  // logs out of aws cli removing credentials
+        }
+    }
+
+}
+

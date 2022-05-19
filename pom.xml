@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.aline</groupId>
     <artifactId>aline-gateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>aline-gateway</name>
     <description>aline-gateway</description>
     <properties>

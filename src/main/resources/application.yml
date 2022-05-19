@@ -4,14 +4,19 @@ server:
 spring:
   application:
     name: "api-gateway"
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          use-insecure-trust-manager: true
 
 app:
   gateway:
-    service-host: "http://localhost"
+    service-host: "http://${DOCKER0_IP}"
     path-prefix: "/api"
     routes:
       - id: "user"
-        port: 8070
+        port: ${USER_PORT}  # 8070
         paths:
           - "@/users"
           - "@/users/{segment}"
@@ -20,14 +25,14 @@ app:
           - "@/login"
           - "/login"
       - id: "underwriter"
-        port: 8071
+        port: ${UNDERWRITER_PORT}  # 8071
         paths:
           - "@/applicants"
           - "@/applications"
           - "@/applicants/{segment}"
           - "@/applications/{segment}"
       - id: "bank"
-        port: 8072
+        port: ${BANK_PORT}  # 8072
         paths:
           - "@/members"
           - "@/members/{segment}"
@@ -38,14 +43,14 @@ app:
           - "@/banks/id"
           - "@/banks/id/{segment}"
       - id: "transaction"
-        port: 8073
+        port: ${TRANSACTION_PORT}  # 8073
         paths:
           - "@/transactions"
           - "@/transactions/{segment}"
           - "@/members/{segment}/transactions"
           - "@/accounts/{segment}/transactions"
       - id: "account"
-        port: 8074
+        port: ${ACCOUNT_PORT}  # 8074
         paths:
           - "@/accounts"
           - "@/accounts/{segment}"
