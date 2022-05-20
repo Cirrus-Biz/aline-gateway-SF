@@ -26,7 +26,7 @@ pipeline {
 
         stage('Build Docker Image Tagged For ECR') {
             steps {
-                sh 'sudo docker build . -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:v0.1.0'
+                sh 'sudo docker build . -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:${GIT_COMMIT}'
             }
         }
 
@@ -42,7 +42,7 @@ pipeline {
 
         stage('Push Image To ECR') {
             steps {
-                sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:v0.1.0'
+                sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:${GIT_COMMIT}'
             }
         }
 
@@ -50,8 +50,11 @@ pipeline {
 
     post {
         always {
+            sh 'sudo docker image prune --all -f'  // removes docker images from worker node
             sh 'sudo docker logout'  // logs out of docker removing credentials
             sh 'sudo rm -rf ~/.aws/'  // logs out of aws cli removing credentials
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'  // removes all files in job workspace
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'  // removes all .git files in job workspace
         }
     }
 
