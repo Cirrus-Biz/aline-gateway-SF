@@ -20,7 +20,23 @@ pipeline {
 
         stage('Build Jar') {
             steps {
-                sh 'mvn clean install -DskipTests'
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Sonar Scan') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube') {
+                  sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage("Quality Gates") {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 
@@ -53,6 +69,7 @@ pipeline {
             sh 'sudo docker image prune --all -f'  // removes docker images from worker node
             sh 'sudo docker logout'  // logs out of docker removing credentials
             sh 'sudo rm -rf ~/.aws/'  // logs out of aws cli removing credentials
+            sh 'sudo rm -rf ~/.sonar/*'  // removes sonar cache
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'  // removes all files in job workspace
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'  // removes all .git files in job workspace
         }
