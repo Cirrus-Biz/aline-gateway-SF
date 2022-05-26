@@ -18,9 +18,9 @@ pipeline {
 
     stages {
 
-        stage('Build Jar') {
+        stage('Build Tests') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true clean install'
+                sh 'mvn test'
             }
         }
 
@@ -37,6 +37,12 @@ pipeline {
                 timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+
+        stage('Build Jar') {
+            steps {
+                sh 'mvn clean package'
             }
         }
 
