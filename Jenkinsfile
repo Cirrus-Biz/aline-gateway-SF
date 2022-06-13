@@ -9,11 +9,11 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id') 
-        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key') 
-        AWS_REGION = credentials('aws_region') 
-        AWS_OUTPUT = credentials('aws_output') 
-        AWS_ACCOUNT_ID = credentials('aws_account_id') 
+        AWS_ACCESS_KEY_ID = credentials('SF_aws_access_key_id') 
+        AWS_SECRET_ACCESS_KEY = credentials('SF_aws_secret_access_key') 
+        AWS_REGION = credentials('SF_aws_region') 
+        AWS_OUTPUT = credentials('SF_aws_output') 
+        AWS_ACCOUNT_ID = credentials('SF_aws_account_id') 
     }
 
     stages {
