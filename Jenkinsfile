@@ -48,7 +48,7 @@ pipeline {
 
         stage('Build Docker Image Tagged For ECR') {
             steps {
-                sh 'sudo docker build . -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:${GIT_COMMIT}'
+                sh 'sudo docker build . -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/sf-aline-gateway-microservice:${GIT_COMMIT}'
             }
         }
 
@@ -64,7 +64,7 @@ pipeline {
 
         stage('Push Image To ECR') {
             steps {
-                sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/aline-gateway-microservice:${GIT_COMMIT}'
+                sh 'sudo docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/sf-aline-gateway-microservice:${GIT_COMMIT}'
             }
         }
 
